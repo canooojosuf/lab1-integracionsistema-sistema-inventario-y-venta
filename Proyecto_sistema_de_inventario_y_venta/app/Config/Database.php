@@ -1,6 +1,6 @@
 <?php 
   
-namespace App\Config; 
+/*namespace App\Config; 
   
 use PDO; 
 use PDOException; 
@@ -18,4 +18,4 @@ class Database
             die("Error de conexión: " . $e->getMessage()); 
         } 
     } 
-} 
+} */

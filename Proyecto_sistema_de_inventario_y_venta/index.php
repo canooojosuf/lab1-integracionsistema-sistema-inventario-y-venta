@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    /*if ($action === 'editar' && $id) {
+    // ===== ACTUALIZAR =====
+    if ($action === 'editar' && $id) {
         $datos = [
             'nombre' => $_POST['nombre'] ?? '',
             'descripcion' => $_POST['descripcion'] ?? '',
@@ -48,33 +49,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: index.php?action=editar&id=' . $id . '&error=Error al actualizar');
         }
         exit;
-    }*/
+    }
+}
+
+
+// ===== OBTENER DATOS PARA EDITAR =====
+$producto = null;
+if ($action === 'editar' && $id) {
+    $producto = $controller->leer($id);
+    if (!$producto) {
+        header('Location: index.php?error=Producto no encontrado');
+        exit;
+    }
 }
 
 // ===== ELIMINAR =====
-/*if ($action === 'eliminar' && $id) {
+if ($action === 'eliminar' && $id) {
     if ($controller->eliminar($id)) {
         header('Location: index.php?mensaje=Producto eliminado exitosamente');
     } else {
         header('Location: index.php?error=Error al eliminar el producto');
     }
     exit;
-}*/
+}
 
 // ===== OBTENER DATOS PARA LISTAR =====
 // ✅ ESTO DEBE ESTAR FUERA DEL IF POST
 $productos = $controller->listar();
-
-// ===== OBTENER DATOS PARA EDITAR =====
-/*$producto = null;
-if ($action === 'editar' && $id) {
-    $producto = $controller->obtenerPorId($id);
-    if (!$producto) {
-        header('Location: index.php?error=Producto no encontrado');
-        exit;
-    }
-}*/
-
 
 
 
@@ -129,6 +130,34 @@ if ($action === 'editar' && $id) {
                 <input type="number" name="stock" id="stock" required>
 
                 <button type="submit">Registrar Producto</button>
+                <a href="index.php" class="btn-cancelar">Cancelar</a>
+            </form>
+        </div>
+
+        <!-- ===== FORMULARIO DE EDICIÓN ===== -->
+    <?php elseif ($action === 'editar' && $producto): ?>
+        <div class="users-form">
+            <h2>Editar Producto</h2>
+            <form action="index.php?action=editar&id=<?= $producto['id'] ?>" method="POST">
+                <label for="nombre">Nombre del Producto:</label>
+                <input type="text" name="nombre" id="nombre" value="<?= htmlspecialchars($producto['nombre']) ?>" required>
+
+                <label for="descripcion">Descripción:</label>
+                <input type="text" name="descripcion" id="descripcion" value="<?= htmlspecialchars($producto['descripcion']) ?>" required>
+
+                <label for="marca">Marca:</label>
+                <input type="text" name="marca" id="marca" value="<?= htmlspecialchars($producto['marca']) ?>" required>
+
+                <label for="medida">Unidad de Medida:</label>
+                <input type="text" name="medida" id="medida" value="<?= htmlspecialchars($producto['medida']) ?>" required>
+
+                <label for="precio">Precio:</label>
+                <input type="number" name="precio" id="precio" step="0.01" value="<?= $producto['precio'] ?>" required>
+
+                <label for="stock">Cantidad:</label>
+                <input type="number" name="stock" id="stock" value="<?= $producto['stock'] ?>" required>
+
+                <button type="submit">Actualizar Producto</button>
                 <a href="index.php" class="btn-cancelar">Cancelar</a>
             </form>
         </div>

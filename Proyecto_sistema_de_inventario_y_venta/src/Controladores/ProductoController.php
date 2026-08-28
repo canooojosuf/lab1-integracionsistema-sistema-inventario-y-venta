@@ -3,7 +3,7 @@
 namespace App\Controladores;
 
 use App\Modelos\Productos;
-use PDO;
+
 
 class ProductoController
 {
@@ -19,15 +19,16 @@ class ProductoController
         return $this->producto->listar();
     }
 
+    public function leer(int $id)
+    {
+        return $this->producto->leer($id);
+    }
+
     public function guardar(array $datos): bool
     {
         return $this->producto->crear($datos);
     }
-    //aqui
-    public function leer(int $id): ?array
-    {
-        return $this->producto->leer($id);
-    }   
+
     public function actualizar(int $id, array $datos): bool
     {
         return $this->producto->actualizar($id, $datos);
@@ -37,5 +38,4 @@ class ProductoController
     {
         return $this->producto->eliminar($id);
     }
-
 }

@@ -9,61 +9,69 @@ use App\Interfaces\CRUDinterfaz;
 
 
 
-class Productos implements CRUDInterfaz
+class Productos extends ProductoBase implements CRUDinterfaz
 {
-    private  $pdo;
 
-    public function __construct()
-    {
-        $this->pdo = Conexion::conectar();
-    }
 
     // ===== LISTAR TODOS =====
     public function listar(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM productos ORDER BY id DESC");
+        $stmt = $this->pdo->prepare("SELECT * FROM productos ORDER BY id DESC");
+        $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    // ===== LEER POR ID =====
+    public function leer(int $id): ?array
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM productos WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch() ?: null;
     }
 
     // ===== CREAR =====
     public function crear(array $datos): bool
     {
         $sql = "INSERT INTO productos (nombre, descripcion, marca, medida, precio, stock) 
-                VALUES (?, ?, ?, ?, ?, ?)";
+                VALUES (:nombre, :descripcion, :marca, :medida, :precio, :stock)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
-            $datos['nombre'],
-            $datos['descripcion'],
-            $datos['marca'],
-            $datos['medida'],
-            $datos['precio'],
-            $datos['stock']
+            ':nombre' => $datos['nombre'],
+            ':descripcion' => $datos['descripcion'],
+            ':marca' => $datos['marca'],
+            ':medida' => $datos['medida'],
+            ':precio' => $datos['precio'],
+            ':stock' => $datos['stock']
         ]);
-        //aqui
     }
-    public function leer(int $id): ?array
-    {
-        $stmt = $this->pdo->prepare("SELECT * FROM productos WHERE id = ?");
-        $stmt->execute([$id]);
-        return $stmt->fetch() ?: null;
-    }   
+
+    // ===== ACTUALIZAR =====
     public function actualizar(int $id, array $datos): bool
     {
-        $sql = "UPDATE productos SET nombre = ?, descripcion = ?, marca = ?, medida = ?, precio = ?, stock = ? WHERE id = ?";
+        $sql = "UPDATE productos SET nombre = :nombre, 
+                descripcion = :descripcion, 
+                marca = :marca, 
+                medida = :medida, 
+                precio = :precio, 
+                stock = :stock 
+                WHERE id = :id";
+
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
-            $datos['nombre'],
-            $datos['descripcion'],
-            $datos['marca'],
-            $datos['medida'],
-            $datos['precio'],
-            $datos['stock'],
-            $id
+            ':nombre' => $datos['nombre'],
+            ':descripcion' => $datos['descripcion'],
+            ':marca' => $datos['marca'],
+            ':medida' => $datos['medida'],
+            ':precio' => $datos['precio'],
+            ':stock' => $datos['stock'],
+            ':id' => $id
         ]);
     }
-        public function eliminar(int $id): bool
+
+    // ===== ELIMINAR =====
+    public function eliminar(int $id): bool
     {
-        $stmt = $this->pdo->prepare("DELETE FROM productos WHERE id = ?");
-        return $stmt->execute([$id]);
-    }   
+        $stmt = $this->pdo->prepare("DELETE FROM productos WHERE id = :id");
+        return $stmt->execute([':id' => $id]);
+    }
 }

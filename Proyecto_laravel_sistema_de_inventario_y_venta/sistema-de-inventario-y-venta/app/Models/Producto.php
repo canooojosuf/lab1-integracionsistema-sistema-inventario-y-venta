@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Producto extends Model
 {
     use HasFactory;
-
 
     protected $fillable = [
         'nombre',
@@ -17,12 +18,26 @@ class Producto extends Model
         'medida',
         'precio',
         'stock',
-        'user_id'
+        'user_id',
     ];
 
-    // Relación: Un producto pertenece a un usuario 
-    public function user()
+    // Un producto tiene muchas transacciones.
+    public function transacciones(): HasMany
+    {
+        return $this->hasMany(Transaccion::class);
+    }
+
+    // Un producto pertenece a un usuario.
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'precio' => 'decimal:2',
+            'stock' => 'integer',
+        ];
     }
 }

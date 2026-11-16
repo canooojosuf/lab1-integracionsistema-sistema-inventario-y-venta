@@ -51,24 +51,24 @@ class ProductoController extends Controller
         return view('productos.show', compact('producto'));
     }
 
-    // Mostrar el formulario de edición.
-   public function edit(Request $request, Producto $producto)
-{
-    $producto = $request->user()
-        ->productos()
-        ->findOrFail($producto->id);
-
-    return view('productos.edit', compact('producto'));
-}
-
-    // Actualizar un producto.
-    public function update(
-        UpdateProductoRequest $request,
-        Producto $producto
-    ) {
+         // Mostrar el formulario de edición.
+    public function edit(Request $request, int $id)
+    {
+        // Busca el producto usando el ID directo de la URL
         $producto = $request->user()
             ->productos()
-            ->findOrFail($producto->id);
+            ->findOrFail($id);
+
+        return view('productos.edit', compact('producto'));
+    }
+
+    // Actualizar un producto.
+    public function update(UpdateProductoRequest $request, int $id)
+    {
+        // Busca el producto usando el ID directo de la URL
+        $producto = $request->user()
+            ->productos()
+            ->findOrFail($id);
 
         $producto->update($request->validated());
 

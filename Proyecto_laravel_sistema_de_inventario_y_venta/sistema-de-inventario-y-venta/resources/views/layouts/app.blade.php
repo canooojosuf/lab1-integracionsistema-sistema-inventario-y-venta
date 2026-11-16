@@ -72,7 +72,20 @@
     </style>
 </head>
 <body>
-    <nav>Sistema de Inventario y Venta — Ferretería</nav>
+   <nav style="background-color: #1a202c; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        Sistema de Inventario y Venta — Ferretería
+    </div>
+
+    @auth
+        <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+            @csrf
+            <button type="submit" style="background-color: #dc3545; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">
+                Cerrar Sesión
+            </button>
+        </form>
+    @endauth
+</nav>
 
     <main>
         @yield('contenido')
@@ -81,5 +94,6 @@
     <footer>
         &copy; {{ date('Y') }} ferreteria.com. Todos los derechos reservados.
     </footer>
+   
 </body>
 </html>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthApiController;
 use App\Http\Controllers\Api\ProductoApiController;
 
 // Ruta pública para login (con límite de intentos)
+Route::post('/register', [AuthApiController::class, 'register']);
 Route::post('/login', [AuthApiController::class, 'login']) 
     ->middleware('throttle:5,1');
 

@@ -17,7 +17,7 @@
             </div>
         @endif
 
-        <form action="{{ route('productos.store') }}" method="POST">
+        <form action="/productos" method="POST">
             @csrf
 
             <!-- Fila 1: Nombre y Marca -->

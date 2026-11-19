@@ -15,6 +15,7 @@ class AuthApiController extends Controller
         $datos = $request->validate([ 
             'email'       => ['required', 'email'], 
             'password'    => ['required'], 
+            'dispositivo' => ['required', 'max:100'],
         ]); 
   
         $user = User::where('email', $datos['email'])->first(); 
@@ -32,6 +33,19 @@ class AuthApiController extends Controller
             'tipo'  => 'Bearer', 
             ], 201); 
     }
+
+     // Método para cerrar sesión (revocar el token actual)
+    public function logout(Request $request)
+    {
+        // Elimina el token que se usó para esta petición
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Sesión cerrada correctamente'
+        ]);
+    }
+
+
     public function yo(Request $request) 
     {
         return $request->user()->only('id', 'name', 'email'); 

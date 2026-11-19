@@ -12,10 +12,10 @@ use Illuminate\Http\Request;
 class ProductoApiController extends Controller
 {
     // 1. Listar todos los productos (GET /api/productos)
-    public function index()
+    public function index(request $request)
     {
         
-        $productos = Producto::latest()->get();
+        $productos = $request->user()->productos()->orderBy('id', 'desc')->get();
         return ProductoResource::collection($productos);
     }
 
@@ -23,7 +23,7 @@ class ProductoApiController extends Controller
     public function store(StoreProductoRequest $request)
     {
         
-        $producto = Producto::create($request->validated());
+        $producto = $request->user()->productos()->create($request->validated());
         
         // Código 201: Created
         return (new ProductoResource($producto))

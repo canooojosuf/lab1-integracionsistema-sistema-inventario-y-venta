@@ -5,17 +5,27 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthApiController;
 use App\Http\Controllers\Api\ProductoApiController;
 
-// Ruta pública para login (con límite de intentos)
+// Rutas públicas
 Route::post('/register', [AuthApiController::class, 'register']);
-Route::post('/login', [AuthApiController::class, 'login']) 
+
+Route::post('/login', [AuthApiController::class, 'login'])
     ->middleware('throttle:5,1');
 
 // Rutas protegidas por Sanctum
-Route::middleware('auth:sanctum')->group(function () { 
+Route::middleware('auth:sanctum')->group(function () {
+
     // Autenticación
-    Route::get('/yo', [AuthApiController::class, 'yo']); 
-    Route::post('/logout', [AuthApiController::class, 'logout']); 
-    
-    // CRUD de Productos (Esto ya maneja index, store, show, update y destroy)
-    Route::apiResource('productos', ProductoApiController::class);
+    Route::get('/yo', [AuthApiController::class, 'yo']);
+
+    Route::post('/logout', [AuthApiController::class, 'logout']);
+
+    // Información del usuario autenticado
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    // CRUD de productos
+    Route::apiResource('productos', ProductoApiController::class)
+        ->names('api.productos');
+
 });

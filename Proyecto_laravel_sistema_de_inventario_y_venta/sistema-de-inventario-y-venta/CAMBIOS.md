@@ -8,7 +8,7 @@ Verifica el siguiente código y detecta si hay algún error, usa PHP y Laravel p
 
 ## Código enviado
 
-```
+```php
 <?php
 
 namespace App\Http\Controllers;
@@ -106,7 +106,7 @@ class ProductoController extends Controller
 
 ## Resultado obtenido - ChatGPT
 
-```
+```php
 <?php
 
 namespace App\Http\Controllers;
@@ -221,7 +221,7 @@ class ProductoController extends Controller
 
 ## Resultado Obtenido - Gemini
 
-```
+```php
 <?php
 
 namespace App\Http\Controllers;

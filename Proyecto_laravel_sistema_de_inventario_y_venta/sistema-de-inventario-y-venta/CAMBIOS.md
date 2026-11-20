@@ -8,6 +8,7 @@ Verifica el siguiente código y detecta si hay algún error, usa PHP y Laravel p
 
 ## Código enviado
 
+```
 <?php
 
 namespace App\Http\Controllers;
@@ -101,10 +102,11 @@ class ProductoController extends Controller
             ->with('success', 'Producto eliminado correctamente.');
     }
 }
+```
 
 ## Resultado obtenido
 
-
+```
 <?php
 
 namespace App\Http\Controllers;
@@ -215,3 +217,4 @@ class ProductoController extends Controller
             ->with('success', 'Producto eliminado correctamente.');
     }
 }
+```

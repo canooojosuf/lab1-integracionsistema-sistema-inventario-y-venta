@@ -1,0 +1,33 @@
+info:
+  name: Login Incorrecto
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: "{{host}}/login"
+  body:
+    type: json
+    data: |-
+      {"email": "joseulisescero@gmail.com", 
+       "password": "123456786966545412",
+       "dispositivo": "prueba-en-bruno"
+      }
+
+runtime:
+  variables:
+    - name: host
+      value: http://127.0.0.1:8000/api
+  scripts:
+    - type: tests
+      code: |-
+        test("Credenciales invalidas responde 422", function () {
+          expect(res.getStatus()).to.equal(422);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

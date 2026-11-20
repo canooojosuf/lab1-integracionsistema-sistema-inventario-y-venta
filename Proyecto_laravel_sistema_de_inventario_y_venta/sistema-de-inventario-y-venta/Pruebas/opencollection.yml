@@ -1,0 +1,26 @@
+opencollection: 1.0.0
+
+info:
+  name: Pruebas de Proyecto
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  auth:
+    type: bearer
+    token: 2|s1L8cI25b5xJA7eZQYhfSEYPPTdtZE0FSxTSkLjP1ea5a1b3
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

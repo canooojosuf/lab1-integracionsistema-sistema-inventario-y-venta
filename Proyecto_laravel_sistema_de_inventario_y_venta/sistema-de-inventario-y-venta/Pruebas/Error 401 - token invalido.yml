@@ -1,0 +1,29 @@
+info:
+  name: Error 401 - token invalido
+  type: http
+  seq: 8
+
+http:
+  method: GET
+  url: "{{host}}/productos"
+  auth:
+    type: bearer
+    token: 2|s1L8cI25b5xJA7eZQYhfSEYPPTdtZE0FSxTSkLjP1ea5a2c2
+
+runtime:
+  variables:
+    - name: host
+      value: http://127.0.0.1:8000/api
+  scripts:
+    - type: tests
+      code: |-
+        test("Token invalido responde 401", function () {
+          expect(res.getStatus()).to.equal(401);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

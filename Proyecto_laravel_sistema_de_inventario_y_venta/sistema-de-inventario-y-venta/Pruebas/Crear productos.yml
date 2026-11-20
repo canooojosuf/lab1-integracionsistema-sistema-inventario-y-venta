@@ -1,0 +1,35 @@
+info:
+  name: " Crear productos"
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{host}}/productos"
+  headers:
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+        "nombre": "TALADRO",
+        "descripcion": "Taladro de 500W",
+        "marca": "BOSCH",
+        "medida": "UNIDAD",
+        "precio": 45.50,
+        "stock": 10
+      }
+  auth: inherit
+
+runtime:
+  variables:
+    - name: host
+      value: http://127.0.0.1:8000/api
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

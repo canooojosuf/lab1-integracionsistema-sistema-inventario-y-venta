@@ -1,0 +1,21 @@
+info:
+  name: Cerrar session
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{host}}/logout"
+  auth: inherit
+
+runtime:
+  variables:
+    - name: host
+      value: http://127.0.0.1:8000/api
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

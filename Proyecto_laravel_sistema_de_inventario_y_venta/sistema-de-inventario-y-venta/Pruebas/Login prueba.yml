@@ -1,0 +1,37 @@
+info:
+  name: Login prueba
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{host}}/login"
+  headers:
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {"email": "joseulisescero@gmail.com", 
+       "password": "12345678",
+       "dispositivo": "prueba-en-bruno"
+      }
+  auth: inherit
+
+runtime:
+  variables:
+    - name: host
+      value: http://127.0.0.1:8000/api
+  scripts:
+    - type: tests
+      code: |-
+        test("Login responde 201", function () {
+          expect(res.getStatus()).to.equal(201);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

@@ -104,6 +104,23 @@ class ProductoController extends Controller
 }
 ```
 
+## JUSTIFICACION
+
+El código no tiene errores fatales de sintaxis (asumiendo que existen la relación productos() en User, la relación transacciones() en Producto, los Form Requests y las vistas), pero sí tiene problemas de diseño, redundancia de consultas e inconsistencia en el manejo de parámetros en Laravel.
+
+## Problemas detectados
+Consulta doble innecesaria en show y destroy:
+Al declarar Producto $producto en la firma del método, Laravel ya hace una consulta SELECT * FROM productos WHERE id = ? antes de entrar al método. Luego vuelves a ejecutar $request->user()->productos()->findOrFail($producto->id), haciendo dos consultas cuando bastaría con una.
+
+Inconsistencia entre Producto $producto y int $id:
+show y destroy usan Route Model Binding (Producto $producto), mientras que edit y update reciben int $id. Lo ideal es mantener un criterio uniforme en todo el controlador.
+
+Resolución global antes de filtrar por usuario:
+Si la ruta no usa ->scopeBindings(), Producto $producto busca primero en toda la tabla productos (de cualquier usuario) antes de que tú filtres por $request->user()->productos(). Si usas int $id (o scoped bindings en la ruta), la búsqueda queda restringida desde el inicio a los productos del usuario autenticado.
+
+Tipado de retorno y claridad:
+Agregar tipos de retorno (View, RedirectResponse) mejora el autocompletado, el análisis estático y la legibilidad en PHP moderno.
+
 ## Resultado obtenido - ChatGPT
 
 ```php

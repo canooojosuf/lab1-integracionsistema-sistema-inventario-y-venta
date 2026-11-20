@@ -29,8 +29,9 @@ class AuthController extends Controller
         if (Auth::attempt($credenciales)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('productos.index'));
-        }
+            //return redirect()->route('productos.index'); //Cambio1
+                return redirect('/productos'); //Cambio2
+            }
 
         return back()->withErrors([
             'email' => 'Las credenciales no son correctas.',
@@ -54,7 +55,7 @@ class AuthController extends Controller
         Auth::login($usuario);
         $request->session()->regenerate();
 
-        return redirect()->route('productos.index');
+        return redirect()->route('/productos');
     }
 
     public function logout(Request $request)

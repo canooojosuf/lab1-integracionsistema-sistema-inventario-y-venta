@@ -1,6 +1,6 @@
 ## IA Utilizada
 
-ChatGPT
+ChatGPT, Gemini
 
 ## Prompt
 
@@ -104,7 +104,7 @@ class ProductoController extends Controller
 }
 ```
 
-## Resultado obtenido
+## Resultado obtenido - ChatGPT
 
 ```
 <?php
@@ -209,6 +209,117 @@ class ProductoController extends Controller
         $producto = $request->user()
             ->productos()
             ->findOrFail($producto->id);
+
+        $producto->delete();
+
+        return redirect()
+            ->route('productos.index')
+            ->with('success', 'Producto eliminado correctamente.');
+    }
+}
+```
+
+## Resultado Obtenido - Gemini
+
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreProductoRequest;
+use App\Http\Requests\UpdateProductoRequest;
+use App\Models\Producto;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+
+class ProductoController extends Controller
+{
+    /**
+     * Mostrar los productos del usuario autenticado.
+     */
+    public function index(Request $request): View
+    {
+        $productos = $request->user()
+            ->productos()
+            ->withCount('transacciones')
+            ->latest()
+            ->get();
+
+        return view('productos.index', compact('productos'));
+    }
+
+    /**
+     * Mostrar el formulario de creación.
+     */
+    public function create(): View
+    {
+        return view('productos.create');
+    }
+
+    /**
+     * Guardar un producto.
+     */
+    public function store(StoreProductoRequest $request): RedirectResponse
+    {
+        $request->user()
+            ->productos()
+            ->create($request->validated());
+
+        return redirect()
+            ->route('productos.index')
+            ->with('success', 'Producto registrado correctamente.');
+    }
+
+    /**
+     * Mostrar los detalles de un producto.
+     */
+    public function show(Request $request, int $id): View
+    {
+        $producto = $request->user()
+            ->productos()
+            ->with('transacciones')
+            ->findOrFail($id);
+
+        return view('productos.show', compact('producto'));
+    }
+
+    /**
+     * Mostrar el formulario de edición.
+     */
+    public function edit(Request $request, int $id): View
+    {
+        $producto = $request->user()
+            ->productos()
+            ->findOrFail($id);
+
+        return view('productos.edit', compact('producto'));
+    }
+
+    /**
+     * Actualizar un producto.
+     */
+    public function update(UpdateProductoRequest $request, int $id): RedirectResponse
+    {
+        $producto = $request->user()
+            ->productos()
+            ->findOrFail($id);
+
+        $producto->update($request->validated());
+
+        return redirect()
+            ->route('productos.show', $producto)
+            ->with('success', 'Producto actualizado correctamente.');
+    }
+
+    /**
+     * Eliminar un producto.
+     */
+    public function destroy(Request $request, int $id): RedirectResponse
+    {
+        $producto = $request->user()
+            ->productos()
+            ->findOrFail($id);
 
         $producto->delete();
 
